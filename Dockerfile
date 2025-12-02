@@ -6,6 +6,8 @@ COPY package*.json ./
 
 RUN npm install
 
+RUN npm i puppeteer
+
 COPY . .
 
 EXPOSE 3000
