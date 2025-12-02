@@ -1,6 +1,11 @@
 const { Client, LocalAuth } = require("whatsapp-web.js");
 const qrcode = require("qrcode-terminal");
 const express = require("express");
+// // Require database
+// const { MongoStore } = require('wwebjs-mongo');
+// const mongoose = require('mongoose');
+// const env = require('dotenv');config();
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
