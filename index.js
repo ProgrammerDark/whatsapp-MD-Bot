@@ -1,5 +1,17 @@
 const { Client, LocalAuth } = require("whatsapp-web.js");
 const qrcode = require("qrcode-terminal");
+import express from "express";
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.get("/", (req, res)=>{
+    res.send("WhatsApp MD Bot is running");
+})
+
+app.listen(PORT, ()=>{
+    console.log(`Server is running on port ${PORT}`);
+})
 
 // Create a new client instance
 const client = new Client({
