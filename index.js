@@ -1,5 +1,5 @@
 const { Client, LocalAuth } = require("whatsapp-web.js");
-const qrcode = require("qrcode-terminal");
+const { QRCode } = require("qrode");
 const express = require("express");
 // // Require database
 // const { MongoStore } = require('wwebjs-mongo');
@@ -18,7 +18,6 @@ app.listen(PORT, ()=>{
     console.log(`Server is running on port ${PORT}`);
 })
 
-// Create a new client instance
 const client = new Client({
   authStrategy: new LocalAuth({
     dataPath: "creds",
@@ -29,16 +28,28 @@ const client = new Client({
   },
 });
 
-// When the client is ready, run this code (only once)
-client.once("ready", () => {
-  console.log("Client is ready!");
-});
 
-// When the client received QR-Code
-client.on("qr", (qr) => {
-  qrcode.generate(qr, { small: true });
-  console.log("QR Code received, scan please!");
-});
+async function init() {
+  const phone = "2348142778000"; // your phone number, international format, no + or symbols
 
-// Start your client
-client.initialize();
+  try {
+    const code = await client.requestPairingCode(phone, /* showNotification = */ true, 180000);
+    console.log('Pairing code:', code);
+    // At this point: open WhatsApp on your phone → Settings → Linked Devices → Link a Device → 
+    // choose “Enter code” (or “Use phone number instead of QR”) → input the code you just got.
+  } catch (err) {
+    console.error('Failed to request pairing code:', err);
+  }
+
+  client.on('ready', () => {
+    console.log('Client ready — connected!');
+  });
+
+  client.on('auth_failure', () => {
+    console.error('Authentication failure');
+  });
+
+  client.initialize();
+}
+
+init();
