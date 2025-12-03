@@ -1,5 +1,5 @@
 const { Client, LocalAuth } = require("whatsapp-web.js");
-const { QRCode } = require("qrode");
+const  QRCode = require("qrcode");
 const express = require("express");
 // // Require database
 // const { MongoStore } = require('wwebjs-mongo');
