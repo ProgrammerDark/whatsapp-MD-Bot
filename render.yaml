@@ -1,65 +1,16 @@
-# render.yaml - configuration for whatsapp-MD-Bot rendering and formatting
-version: 1
+# render.yaml — Blueprint spec for Render.com
 
-bot:
-  name: whatsapp-MD-Bot
-  default_locale: en
-  timezone: UTC
-
-rendering:
-  markdown:
-    enabled: true
-    sanitize: true          # strip disallowed HTML
-    allowed_tags:
-      - em
-      - strong
-      - code
-      - pre
-      - a
-      - br
-    convert_linebreaks: true
-  max_message_length: 4096
-
-templates:
-  greeting: |
-    Hi {{name}} 👋
-    {{message}}
-  help: |
-    Available commands:
-    - /help — show this help
-    - /render <markdown> — render markdown as WhatsApp message
-  footer: |
-    — Sent by whatsapp-MD-Bot
-
-media:
-  upload_path: ./media
-  max_file_size_mb: 16
-  allowed_types:
-    - image/png
-    - image/jpeg
-    - video/mp4
-  thumbnail:
-    enabled: true
-    max_width: 800
-    max_height: 800
-
-quick_replies:
-  enabled: true
-  max_items: 5
-
-rate_limit:
-  messages_per_minute: 60
-  burst: 10
-
-logging:
-  level: info         # debug | info | warn | error
-  file: ./logs/render.log
-  rotate: true
-  max_size_mb: 10
-
-webhooks:
-  enabled: false
-  url: ""
-  timeout_seconds: 5
-
-schema: "https://example.com/schemas/render-config-v1.json"
+services:
+  - type: web
+    name: whatsapp-md-bot       # change to something meaningful
+    env: docker
+    branch: main            # or the branch you use
+    dockerfilePath: ./Dockerfile   # path to your Dockerfile
+    dockerContext: .              # build context — root of repo
+    # Optionally specify plan (e.g. free, starter, basic) — omit to use default.
+    plan: free
+    envVars:                    # optionally set env vars
+      - key: PORT
+        value: "3000"
+    #   - key: NODE_ENV
+    #     value: production
